@@ -23,7 +23,7 @@ function translateObject(obj, apiKey, lang) {
           } = await response.json();
           obj[keys[i]] = translation.text;
         } else if (typeof obj[keys[i]] === 'object') {
-          await translateObject(obj[keys[i]], apiKey);
+          await translateObject(obj[keys[i]], apiKey, lang);
         }
       }
       resolve(obj);
