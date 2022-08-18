@@ -3,6 +3,11 @@
   <p>Translate json objects using the deepl api.</p>
 </div>
 
+
+### Prerequisites
+- At least [nodejs 18.0.0](https://nodejs.org/en/download/)
+
+
 ### Usage
 
 **Arguments**
