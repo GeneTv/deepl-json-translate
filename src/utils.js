@@ -11,17 +11,28 @@ function translateObject(obj, apiKey, lang) {
       const keys = Object.keys(obj);
       for (let i = 0; i < keys.length; i++) {
         if (typeof obj[keys[i]] === 'string') {
+
+          // Replace placeholders with numbers
+          let matches = {};
+          let placeholderIndex = 1;
+          let textQuery = obj[keys[i]].replace(/\{(.*?)\}/g, function(_, match) {
+            matches[placeholderIndex] = match;
+            return '{' + placeholderIndex++ + '}';
+          });        
+
           const response = await fetch('https://api-free.deepl.com/v2/translate', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: 'auth_key=' + apiKey + '&text=' + obj[keys[i]] + '&target_lang=' + lang,
+            body: 'auth_key=' + apiKey + '&text=' + textQuery + '&target_lang=' + lang,
           });
           const {
             translations: [translation],
           } = await response.json();
-          obj[keys[i]] = translation.text;
+          obj[keys[i]] = translation.text.replace(/\{(.*?)\}/g, function(_, match) {
+            return '{' + matches[match] + '}';
+          });
         } else if (typeof obj[keys[i]] === 'object') {
           await translateObject(obj[keys[i]], apiKey, lang);
         }
