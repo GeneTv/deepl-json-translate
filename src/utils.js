@@ -12,7 +12,7 @@ function translateObject(obj, apiKey, lang) {
       for (let i = 0; i < keys.length; i++) {
         if (typeof obj[keys[i]] === 'string') {
 
-          // Replace placeholders with numbers
+          // We have to replace the text placeholders with number placeholders to prevent deepl. From translating the placeholder text.
           let matches = {};
           let placeholderIndex = 1;
           let textQuery = obj[keys[i]].replace(/\{(.*?)\}/g, function(_, match) {
